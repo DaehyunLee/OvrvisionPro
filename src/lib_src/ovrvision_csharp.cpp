@@ -208,6 +208,16 @@ CSHARP_EXPORT unsigned char* ovGetCamImageBGRAPointer(int eye)
 	//Get image
 	return g_ovOvrvision->GetCamImageBGRA((OVR::Cameye)eye);
 }
+
+CSHARP_EXPORT void ovSetCallbackImageFunction(void(*func)())
+{
+	if (g_ovOvrvision == NULL)
+		return;
+
+	//Get image
+	g_ovOvrvision->SetCallbackImageFunction(func);
+}
+
 // int ovGetCamImageRGB(unsigned char* pImage, int eye)
 CSHARP_EXPORT void ovGetCamImageRGB(unsigned char* pImage, int eye)
 {
