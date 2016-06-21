@@ -1,5 +1,4 @@
 .metadata
-<<<<<<< HEAD
 /bin/calibtool
 /bin/csharp_x86
 /bin/x64
@@ -15,3 +14,7 @@
 /build/all_unity5_metaio/Assets/OvrvisionPro/Plugins/ovrvision.bundle
 /build/all_unity5/Library
 /build/all_unity5_metaio/Library
+
+*.opensdf
+*.sdf
+*.suo
