@@ -499,8 +499,11 @@ int OvrvisionDirectShow::CreateDevice(usb_id vid, usb_id pid,
 				VIDEOINFOHEADER *pVih = reinterpret_cast<VIDEOINFOHEADER*>(pmt->pbFormat);
 				REFERENCE_TIME framerate = 10000000 / pVih->AvgTimePerFrame;
 				//Set infomation
+
+				//Add 5% buffer room for the frame rate. frame rate seems to return 59 ~ 60...
+				bool frameInRange = (rate - rate / 20) < framerate && framerate < (rate + rate / 20);
 				if(pVih->bmiHeader.biWidth == cam_w && pVih->bmiHeader.biHeight == cam_h
-					 && pmt->subtype == MEDIASUBTYPE_YUY2 && framerate == rate){
+					&& pmt->subtype == MEDIASUBTYPE_YUY2 && frameInRange){
 					hr = pAMSConfig->SetFormat(pmt);
 					m_width = pVih->bmiHeader.biWidth;
 					m_height = pVih->bmiHeader.biHeight;
