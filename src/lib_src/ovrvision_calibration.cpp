@@ -115,8 +115,8 @@ bool OvrvisionCalibration::FindChessBoardCorners(const unsigned char* left_img, 
 	std::vector<cv::Point2f> current_corners_left;
 	std::vector<cv::Point2f> current_corners_right;
 
-	m_isFound[OV_CAMEYE_LEFT] = cv::findChessboardCorners(src_gray_left, m_pattern_size, current_corners_left);
-	m_isFound[OV_CAMEYE_RIGHT] = cv::findChessboardCorners(src_gray_right, m_pattern_size, current_corners_right);
+	m_isFound[OV_CAMEYE_LEFT] = cv::findChessboardCorners(src_gray_left, m_pattern_size, current_corners_left, CALIB_CB_ADAPTIVE_THRESH + CALIB_CB_NORMALIZE_IMAGE + CALIB_CB_FAST_CHECK);
+	m_isFound[OV_CAMEYE_RIGHT] = cv::findChessboardCorners(src_gray_right, m_pattern_size, current_corners_right, CALIB_CB_ADAPTIVE_THRESH + CALIB_CB_NORMALIZE_IMAGE + CALIB_CB_FAST_CHECK);
 
 	if(m_isFound[OV_CAMEYE_LEFT] && m_isFound[OV_CAMEYE_RIGHT])
 	{
@@ -150,25 +150,55 @@ void OvrvisionCalibration::DrawChessboardCorners(const unsigned char* src_img, u
 
 	if(m_image_count-1 < 0)
 		return;
-	
+
 	//Draw
-	if(eye == OV_CAMEYE_LEFT)
-		cv::drawChessboardCorners(dest, m_pattern_size, m_subpix_corners_left[m_image_count-1],m_isFound[OV_CAMEYE_LEFT]);
+	if (eye == OV_CAMEYE_LEFT)
+		cv::drawChessboardCorners(dest, m_pattern_size, m_subpix_corners_left[m_image_count - 1], m_isFound[OV_CAMEYE_LEFT]);
 	else
-		cv::drawChessboardCorners(dest, m_pattern_size, m_subpix_corners_right[m_image_count-1],m_isFound[OV_CAMEYE_RIGHT]);
+		cv::drawChessboardCorners(dest, m_pattern_size, m_subpix_corners_right[m_image_count - 1], m_isFound[OV_CAMEYE_RIGHT]);
 
 	//Copy
-	memcpy(dest_img,dest.data, sizeof(unsigned char) * m_image_size.width * m_image_size.height * OV_RGB_DATASIZE);
+	memcpy(dest_img, dest.data, sizeof(unsigned char) * m_image_size.width * m_image_size.height * OV_RGB_DATASIZE);
+
+	// we need a dump function instead of draw. 
+	char filename[128];
+	sprintf(filename, "Image/calib_%d%s.jpg", m_image_count, eye == OV_CAMEYE_LEFT ? "L" : "R");
+	cv::imwrite(filename, dest);
+
+	if (m_image_count % 25 == 0)
+	{
+		if (eye == OV_CAMEYE_LEFT)
+		{
+			for (int i = 0; i < m_image_count; i++)
+			{
+				cv::drawChessboardCorners(dest, m_pattern_size, m_subpix_corners_left[i], m_isFound[OV_CAMEYE_LEFT]);
+			}
+		}
+		else
+		{
+			for (int i = 0; i < m_image_count; i++)
+			{
+				cv::drawChessboardCorners(dest, m_pattern_size, m_subpix_corners_right[i], m_isFound[OV_CAMEYE_RIGHT]);
+			}
+		}
+		//Copy
+		memcpy(dest_img, dest.data, sizeof(unsigned char) * m_image_size.width * m_image_size.height * OV_RGB_DATASIZE);
+
+		// we need a dump function instead of draw. 
+		char filename[128];
+		sprintf(filename, "calib_Final%d%s.jpg", m_image_count, eye == OV_CAMEYE_LEFT ? "L" : "R");
+		cv::imwrite(filename, dest);
+	}
 }
 
-void OvrvisionCalibration::SolveStereoParameter()
+double OvrvisionCalibration::SolveStereoParameter()
 {
 	if(m_isReady)
-		return;
+		return -1;
 
 	if(m_image_count<3)
 	{
-		return;
+		return -1;
 	}
 
 	//setup 2D-3D points data
@@ -217,14 +247,23 @@ void OvrvisionCalibration::SolveStereoParameter()
 	//intrinsic parameters
 	cv::TermCriteria criteria( CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.001 );
 
+	m_calibrateCameraResult[OV_CAMEYE_LEFT] = result_left;
+	m_calibrateCameraResult[OV_CAMEYE_RIGHT] = result_right;
+	m_cameraCalibration[OV_CAMEYE_LEFT].intrinsic_before_stereoCalib = m_cameraCalibration[OV_CAMEYE_LEFT].intrinsic;
+	m_cameraCalibration[OV_CAMEYE_RIGHT].intrinsic_before_stereoCalib = m_cameraCalibration[OV_CAMEYE_RIGHT].intrinsic;
+	m_cameraCalibration[OV_CAMEYE_LEFT].distortion_before_stereoCalib = m_cameraCalibration[OV_CAMEYE_LEFT].distortion;
+	m_cameraCalibration[OV_CAMEYE_RIGHT].distortion_before_stereoCalib = m_cameraCalibration[OV_CAMEYE_RIGHT].distortion;
+
 	double rms = cv::stereoCalibrate(object_points, image_points1, image_points2,
 		m_cameraCalibration[OV_CAMEYE_LEFT].intrinsic, m_cameraCalibration[OV_CAMEYE_LEFT].distortion,
 		m_cameraCalibration[OV_CAMEYE_RIGHT].intrinsic, m_cameraCalibration[OV_CAMEYE_RIGHT].distortion,
 		m_image_size, m_relate_rot, m_relate_trans, m_E, m_F,
-		CV_CALIB_RATIONAL_MODEL | CV_CALIB_USE_INTRINSIC_GUESS | CV_CALIB_FIX_PRINCIPAL_POINT, criteria);
+		CV_CALIB_RATIONAL_MODEL | CV_CALIB_FIX_INTRINSIC | CV_CALIB_FIX_PRINCIPAL_POINT | CV_CALIB_SAME_FOCAL_LENGTH, criteria);
 
+	m_stereoCalibrateResult = rms;
 	//Rectification
 	StereoRectificationMatrix();
+	return rms;
 }
 
 void OvrvisionCalibration::StereoRectificationMatrix()
@@ -263,6 +302,32 @@ void OvrvisionCalibration::SaveCalibrationParameter(OvrvisionPro* system)
 
 	//Write
 	ovrset.WriteEEPROM(WRITE_EEPROM_FLAG_ALLWR);	//WRITE_EEPROM_FLAG_LENSPARAMWR
+
+	char filename[256];
+	sprintf(filename, "ovrvision_writetest%.4f.xml", (float)m_stereoCalibrateResult);
+	FileStorage cvfs(filename, CV_STORAGE_WRITE | CV_STORAGE_FORMAT_XML);
+
+	//Write undistort param
+	write(cvfs, "LeftCameraInstric_before", m_cameraCalibration[OV_CAMEYE_LEFT].intrinsic_before_stereoCalib);
+	write(cvfs, "RightCameraInstric_before", m_cameraCalibration[OV_CAMEYE_RIGHT].intrinsic_before_stereoCalib);
+	write(cvfs, "LeftCameraDistortion_before", m_cameraCalibration[OV_CAMEYE_LEFT].distortion_before_stereoCalib);
+	write(cvfs, "RightCameraDistortion_before", m_cameraCalibration[OV_CAMEYE_RIGHT].distortion_before_stereoCalib);
+
+	write(cvfs, "LeftCameraInstric", ovrset.m_leftCameraInstric);
+	write(cvfs, "RightCameraInstric", ovrset.m_rightCameraInstric);
+	write(cvfs, "LeftCameraDistortion", ovrset.m_leftCameraDistortion);
+	write(cvfs, "RightCameraDistortion", ovrset.m_rightCameraDistortion);
+	write(cvfs, "R1", ovrset.m_R1);
+	write(cvfs, "R2", ovrset.m_R2);
+	write(cvfs, "T", ovrset.m_trans);
+
+	write(cvfs, "FocalPoint", ovrset.m_focalPoint);
+
+	write(cvfs, "CablibErr_Left", m_calibrateCameraResult[OV_CAMEYE_LEFT]);
+	write(cvfs, "CablibErr_Right", m_calibrateCameraResult[OV_CAMEYE_RIGHT]);
+	write(cvfs, "CablibErr_Stereo", m_stereoCalibrateResult);
+
+	cvfs.release();
 
 	//50ms wait
 #ifdef WIN32

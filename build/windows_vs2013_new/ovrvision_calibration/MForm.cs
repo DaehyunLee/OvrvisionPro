@@ -20,11 +20,13 @@ namespace ovrvision_calibration
         //SettingForm
         SettingForm settingForm;
 
-        const int CalibrationImageNum = 25;
+        int CalibrationImageNumSteps = 3;
+        int CalibrationImageNum;
 
 		public MFrom()
 		{
-			InitializeComponent();
+            CalibrationImageNum = CalibrationImageNumSteps;
+            InitializeComponent();
             this.KeyPreview = true;
 
 			//Create Ovrvision Class
@@ -148,7 +150,7 @@ namespace ovrvision_calibration
                     float tilesize = csf.GetTileSize();
                     if (tilesize > 5)
                     {
-                        Ovrvision.InitializeCalibration(7, 4, (float)tilesize);
+                        Ovrvision.InitializeCalibration(9, 7, (float)tilesize);
                         cabliButton.Text = "Find Chessboard";
                         textBox1.AppendText(String.Format("Start calibration.... tile size is {0}mm\r\n", tilesize));
 
@@ -165,9 +167,13 @@ namespace ovrvision_calibration
                 Thread.Sleep(25);
 
                 if(Ovrvision.CalibFindChess() != 0)
+                {
                     textBox1.AppendText(String.Format("[Success]Chess board was found: No.{0} / {1}\r\n", Ovrvision.CalibGetImageCount(), CalibrationImageNum));
+                }
                 else
+                {
                     textBox1.AppendText(String.Format("[Failure]Can not find the chess board.\r\n"));
+                }
 
                 if (Ovrvision.CalibGetImageCount() >= CalibrationImageNum)
 				{
@@ -180,23 +186,33 @@ namespace ovrvision_calibration
 			else if (cabliButton.Text == "Create Parameters")
 			{
                 textBox1.AppendText(String.Format("Setup in the data..... "));
-				Ovrvision.CalibSolveStereoParameter();
+				double result = Ovrvision.CalibSolveStereoParameter();
 				textBox1.AppendText(String.Format("OK!\r\n"));
                 Thread.Sleep(500); //0.5s wait
                 textBox1.AppendText(String.Format("The calibration params was saved successfully.\r\n"));
+                textBox1.AppendText(String.Format("calibration error{0}\r\n", result));
 
-                //Close
-                ThreadEnd = true;
-                UpdateThread.Join();
-                if (Ovrvision.Close())
+                const double AcceptableErr = 1.0;
+                if (result < AcceptableErr)
                 {
-                    statelabel.Text = "Closed";
-                    runbutton.Text = "Open Ovrvision";
-                    cabliButton.Text = "Start Calibration";
-                    cameraPicRight.Image = null;
-                    cameraPicLeft.Image = null;
+                    //Close
+                    ThreadEnd = true;
+                    UpdateThread.Join();
+                    if (Ovrvision.Close())
+                    {
+                        statelabel.Text = "Closed";
+                        runbutton.Text = "Open Ovrvision";
+                        cabliButton.Text = "Start Calibration";
+                        cameraPicRight.Image = null;
+                        cameraPicLeft.Image = null;
 
-                    cabliButton.Enabled = false;
+                        cabliButton.Enabled = false;
+                    }
+                }
+                else
+                {
+                    CalibrationImageNum += CalibrationImageNumSteps;
+                    cabliButton.Text = "Find Chessboard";
                 }
 
                 textBox1.AppendText(String.Format("Ovrvision calibration is done.\r\n"));

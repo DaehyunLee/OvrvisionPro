@@ -39,6 +39,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxSize = new System.Windows.Forms.ComboBox();
             this.buttonSetting = new System.Windows.Forms.Button();
+            this.CalibXMLOverride = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.cameraPicLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cameraPicRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -49,9 +50,9 @@
             // 
             // runbutton
             // 
-            this.runbutton.Location = new System.Drawing.Point(144, 8);
+            this.runbutton.Location = new System.Drawing.Point(144, 9);
             this.runbutton.Name = "runbutton";
-            this.runbutton.Size = new System.Drawing.Size(132, 29);
+            this.runbutton.Size = new System.Drawing.Size(132, 31);
             this.runbutton.TabIndex = 0;
             this.runbutton.Text = "Open Ovrvision";
             this.runbutton.UseVisualStyleBackColor = true;
@@ -60,9 +61,9 @@
             // statelabel
             // 
             this.statelabel.AutoSize = true;
-            this.statelabel.Location = new System.Drawing.Point(282, 17);
+            this.statelabel.Location = new System.Drawing.Point(282, 18);
             this.statelabel.Name = "statelabel";
-            this.statelabel.Size = new System.Drawing.Size(77, 12);
+            this.statelabel.Size = new System.Drawing.Size(73, 13);
             this.statelabel.TabIndex = 1;
             this.statelabel.Text = "State : Closed";
             // 
@@ -72,7 +73,7 @@
             this.cameraPicLeft.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cameraPicLeft.Location = new System.Drawing.Point(0, 0);
             this.cameraPicLeft.Name = "cameraPicLeft";
-            this.cameraPicLeft.Size = new System.Drawing.Size(673, 524);
+            this.cameraPicLeft.Size = new System.Drawing.Size(673, 568);
             this.cameraPicLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.cameraPicLeft.TabIndex = 2;
             this.cameraPicLeft.TabStop = false;
@@ -84,7 +85,7 @@
             this.cameraPicRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cameraPicRight.Location = new System.Drawing.Point(0, 0);
             this.cameraPicRight.Name = "cameraPicRight";
-            this.cameraPicRight.Size = new System.Drawing.Size(677, 524);
+            this.cameraPicRight.Size = new System.Drawing.Size(677, 568);
             this.cameraPicRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.cameraPicRight.TabIndex = 3;
             this.cameraPicRight.TabStop = false;
@@ -95,7 +96,7 @@
             this.splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer.Location = new System.Drawing.Point(12, 47);
+            this.splitContainer.Location = new System.Drawing.Point(12, 51);
             this.splitContainer.Name = "splitContainer";
             // 
             // splitContainer.Panel1
@@ -105,7 +106,7 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.cameraPicRight);
-            this.splitContainer.Size = new System.Drawing.Size(1354, 524);
+            this.splitContainer.Size = new System.Drawing.Size(1354, 568);
             this.splitContainer.SplitterDistance = 673;
             this.splitContainer.TabIndex = 4;
             // 
@@ -118,9 +119,9 @@
             "DEMOSAIC&REMAP",
             "DEMOSAIC",
             "NONE"});
-            this.comboBox1.Location = new System.Drawing.Point(1061, 17);
+            this.comboBox1.Location = new System.Drawing.Point(1061, 18);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(147, 20);
+            this.comboBox1.Size = new System.Drawing.Size(147, 21);
             this.comboBox1.TabIndex = 5;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
@@ -128,9 +129,9 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(948, 20);
+            this.label1.Location = new System.Drawing.Point(948, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(107, 12);
+            this.label1.Size = new System.Drawing.Size(100, 13);
             this.label1.TabIndex = 6;
             this.label1.Text = "Processing Quality :";
             // 
@@ -146,18 +147,18 @@
             "1280x800@60",
             "640x480@90",
             "320x240@120"});
-            this.comboBoxTYPE.Location = new System.Drawing.Point(12, 12);
+            this.comboBoxTYPE.Location = new System.Drawing.Point(12, 13);
             this.comboBoxTYPE.Name = "comboBoxTYPE";
-            this.comboBoxTYPE.Size = new System.Drawing.Size(126, 20);
+            this.comboBoxTYPE.Size = new System.Drawing.Size(126, 21);
             this.comboBoxTYPE.TabIndex = 7;
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1214, 20);
+            this.label2.Location = new System.Drawing.Point(1214, 22);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 12);
+            this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 8;
             this.label2.Text = "ViewMode :";
             // 
@@ -169,9 +170,9 @@
             this.comboBoxSize.Items.AddRange(new object[] {
             "ACTUAL",
             "FULL"});
-            this.comboBoxSize.Location = new System.Drawing.Point(1283, 17);
+            this.comboBoxSize.Location = new System.Drawing.Point(1283, 18);
             this.comboBoxSize.Name = "comboBoxSize";
-            this.comboBoxSize.Size = new System.Drawing.Size(83, 20);
+            this.comboBoxSize.Size = new System.Drawing.Size(83, 21);
             this.comboBoxSize.TabIndex = 9;
             this.comboBoxSize.SelectedIndexChanged += new System.EventHandler(this.comboBoxSize_SelectedIndexChanged);
             // 
@@ -179,20 +180,28 @@
             // 
             this.buttonSetting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSetting.Enabled = false;
-            this.buttonSetting.Location = new System.Drawing.Point(842, 9);
+            this.buttonSetting.Location = new System.Drawing.Point(842, 10);
             this.buttonSetting.Name = "buttonSetting";
-            this.buttonSetting.Size = new System.Drawing.Size(100, 29);
+            this.buttonSetting.Size = new System.Drawing.Size(100, 31);
             this.buttonSetting.TabIndex = 10;
             this.buttonSetting.Text = "Camera Setting";
             this.buttonSetting.UseVisualStyleBackColor = true;
             this.buttonSetting.Click += new System.EventHandler(this.buttonSetting_Click);
             // 
+            // CalibXMLOverride
+            // 
+            this.CalibXMLOverride.Location = new System.Drawing.Point(520, 15);
+            this.CalibXMLOverride.Name = "CalibXMLOverride";
+            this.CalibXMLOverride.Size = new System.Drawing.Size(236, 20);
+            this.CalibXMLOverride.TabIndex = 11;
+            // 
             // MFrom
             // 
             this.AcceptButton = this.runbutton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1378, 583);
+            this.ClientSize = new System.Drawing.Size(1378, 632);
+            this.Controls.Add(this.CalibXMLOverride);
             this.Controls.Add(this.buttonSetting);
             this.Controls.Add(this.comboBoxSize);
             this.Controls.Add(this.label2);
@@ -229,6 +238,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBoxSize;
         private System.Windows.Forms.Button buttonSetting;
-	}
+        private System.Windows.Forms.TextBox CalibXMLOverride;
+    }
 }
 

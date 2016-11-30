@@ -36,7 +36,8 @@ namespace ovrvision_app
         {
             if (runbutton.Text == "Open Ovrvision")
             {
-                if (Ovrvision.Open(comboBoxTYPE.SelectedIndex))
+                //override
+                if (Ovrvision.Open(comboBoxTYPE.SelectedIndex, CalibXMLOverride.Text))
                 {	//true
                     statelabel.Text = "State : Opened";
                     runbutton.Text = "Close Ovrvision";

@@ -45,9 +45,9 @@
             // 
             // runbutton
             // 
-            this.runbutton.Location = new System.Drawing.Point(12, 12);
+            this.runbutton.Location = new System.Drawing.Point(12, 13);
             this.runbutton.Name = "runbutton";
-            this.runbutton.Size = new System.Drawing.Size(132, 29);
+            this.runbutton.Size = new System.Drawing.Size(132, 31);
             this.runbutton.TabIndex = 0;
             this.runbutton.Text = "Open Ovrvision";
             this.runbutton.UseVisualStyleBackColor = true;
@@ -56,18 +56,18 @@
             // statelabel
             // 
             this.statelabel.AutoSize = true;
-            this.statelabel.Location = new System.Drawing.Point(288, 20);
+            this.statelabel.Location = new System.Drawing.Point(288, 22);
             this.statelabel.Name = "statelabel";
-            this.statelabel.Size = new System.Drawing.Size(77, 12);
+            this.statelabel.Size = new System.Drawing.Size(73, 13);
             this.statelabel.TabIndex = 1;
             this.statelabel.Text = "State : Closed";
             // 
             // cabliButton
             // 
             this.cabliButton.Enabled = false;
-            this.cabliButton.Location = new System.Drawing.Point(150, 12);
+            this.cabliButton.Location = new System.Drawing.Point(150, 13);
             this.cabliButton.Name = "cabliButton";
-            this.cabliButton.Size = new System.Drawing.Size(132, 29);
+            this.cabliButton.Size = new System.Drawing.Size(132, 31);
             this.cabliButton.TabIndex = 5;
             this.cabliButton.Text = "Start Calibration";
             this.cabliButton.UseVisualStyleBackColor = true;
@@ -77,9 +77,9 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(955, 47);
+            this.label1.Location = new System.Drawing.Point(955, 51);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 12);
+            this.label1.Size = new System.Drawing.Size(90, 13);
             this.label1.TabIndex = 7;
             this.label1.Text = "Camera Monitor : ";
             // 
@@ -89,20 +89,20 @@
             this.textBox1.BackColor = System.Drawing.SystemColors.InfoText;
             this.textBox1.ForeColor = System.Drawing.SystemColors.InactiveBorder;
             this.textBox1.HideSelection = false;
-            this.textBox1.Location = new System.Drawing.Point(892, 450);
+            this.textBox1.Location = new System.Drawing.Point(892, 488);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(305, 199);
+            this.textBox1.Size = new System.Drawing.Size(305, 215);
             this.textBox1.TabIndex = 8;
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(890, 435);
+            this.label2.Location = new System.Drawing.Point(890, 471);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 12);
+            this.label2.Size = new System.Drawing.Size(48, 13);
             this.label2.TabIndex = 9;
             this.label2.Text = "Output : ";
             // 
@@ -112,9 +112,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chessPicture.Image = global::ovrvision_calibration.Properties.Resources.chess4x7;
-            this.chessPicture.Location = new System.Drawing.Point(12, 47);
+            this.chessPicture.Location = new System.Drawing.Point(12, 51);
             this.chessPicture.Name = "chessPicture";
-            this.chessPicture.Size = new System.Drawing.Size(874, 602);
+            this.chessPicture.Size = new System.Drawing.Size(874, 652);
             this.chessPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.chessPicture.TabIndex = 6;
             this.chessPicture.TabStop = false;
@@ -124,9 +124,9 @@
             this.cameraPicRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cameraPicRight.BackColor = System.Drawing.Color.Black;
             this.cameraPicRight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.cameraPicRight.Location = new System.Drawing.Point(957, 248);
+            this.cameraPicRight.Location = new System.Drawing.Point(957, 269);
             this.cameraPicRight.Name = "cameraPicRight";
-            this.cameraPicRight.Size = new System.Drawing.Size(240, 180);
+            this.cameraPicRight.Size = new System.Drawing.Size(240, 195);
             this.cameraPicRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.cameraPicRight.TabIndex = 3;
             this.cameraPicRight.TabStop = false;
@@ -137,9 +137,9 @@
             this.cameraPicLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cameraPicLeft.BackColor = System.Drawing.Color.Black;
             this.cameraPicLeft.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.cameraPicLeft.Location = new System.Drawing.Point(957, 62);
+            this.cameraPicLeft.Location = new System.Drawing.Point(957, 67);
             this.cameraPicLeft.Name = "cameraPicLeft";
-            this.cameraPicLeft.Size = new System.Drawing.Size(240, 180);
+            this.cameraPicLeft.Size = new System.Drawing.Size(240, 195);
             this.cameraPicLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.cameraPicLeft.TabIndex = 2;
             this.cameraPicLeft.TabStop = false;
@@ -148,9 +148,9 @@
             // buttonSetting
             // 
             this.buttonSetting.Enabled = false;
-            this.buttonSetting.Location = new System.Drawing.Point(766, 12);
+            this.buttonSetting.Location = new System.Drawing.Point(766, 13);
             this.buttonSetting.Name = "buttonSetting";
-            this.buttonSetting.Size = new System.Drawing.Size(104, 29);
+            this.buttonSetting.Size = new System.Drawing.Size(104, 31);
             this.buttonSetting.TabIndex = 10;
             this.buttonSetting.Text = "Camera Setting";
             this.buttonSetting.UseVisualStyleBackColor = true;
@@ -159,9 +159,9 @@
             // MFrom
             // 
             this.AcceptButton = this.runbutton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1209, 662);
+            this.ClientSize = new System.Drawing.Size(1209, 717);
             this.Controls.Add(this.buttonSetting);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
@@ -172,7 +172,7 @@
             this.Controls.Add(this.cabliButton);
             this.Controls.Add(this.statelabel);
             this.Controls.Add(this.runbutton);
-            this.MinimumSize = new System.Drawing.Size(1200, 700);
+            this.MinimumSize = new System.Drawing.Size(1200, 755);
             this.Name = "MFrom";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ovrvision Calibration Tool";

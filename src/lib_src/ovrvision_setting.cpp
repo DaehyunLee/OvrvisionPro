@@ -341,6 +341,31 @@ bool OvrvisionSetting::WriteEEPROM(unsigned char flag) {
 	return true;
 }
 
+bool OvrvisionSetting::ReadXML(const char* filename)
+{
+	cv::FileStorage cvfs(filename, CV_STORAGE_READ | CV_STORAGE_FORMAT_XML);
+
+	if (cvfs.isOpened())
+	{
+		//get data node
+		cv::FileNode data(cvfs.fs, NULL);
+
+		//read undistort param
+		data["LeftCameraInstric"] >> m_leftCameraInstric;
+		data["RightCameraInstric"] >> m_rightCameraInstric;
+		data["LeftCameraDistortion"] >> m_leftCameraDistortion;
+		data["RightCameraDistortion"] >> m_rightCameraDistortion;
+		data["R1"] >> m_R1;
+		data["R2"] >> m_R2;
+		data["T"] >> m_trans;
+		data["FocalPoint"] >> m_focalPoint;
+
+		cvfs.release();
+		return true;
+	}
+	return false;
+}
+
 //Reset Setting
 bool OvrvisionSetting::ResetEEPROM()
 {

@@ -92,7 +92,7 @@
     <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\..\..\bin\x86\</OutDir>
+    <OutDir>.\..\..\bin\Debug\x86\</OutDir>
     <IntDir>$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
@@ -148,6 +148,7 @@
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(OutDir)ovrvisiond.lib</ImportLibrary>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName)d.pdb</ProgramDatabaseFile>
     </Link>
     <PostBuildEvent>
       <Command>If Exist $(TargetDir)\ovrvision.dll copy $(TargetDir)\ovrvision.dll $(SolutionDir)..\all_unity5\Assets\OvrvisionPro\Plugins\x86\ovrvision.dll /Y /B</Command>

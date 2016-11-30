@@ -67,7 +67,7 @@ public:
 	//Detecter
 	bool FindChessBoardCorners(const unsigned char* left_img, const unsigned char* right_img);
 	void DrawChessboardCorners(const unsigned char* src_img, unsigned char* dest_img, Cameye eye);
-	void SolveStereoParameter();
+	double SolveStereoParameter();
 
 	//Save
 	void SaveCalibrationParameter(OvrvisionPro* ovrpro);
@@ -79,6 +79,8 @@ public:
 	std::vector< std::vector<cv::Point2f> > m_subpix_corners_right;
 
 	struct {
+		cv::Mat intrinsic_before_stereoCalib;
+		cv::Mat distortion_before_stereoCalib;
 		cv::Mat intrinsic;
 		cv::Mat distortion;
 		cv::Mat R;
@@ -103,6 +105,9 @@ private:
 	cv::Mat m_E;		//essential matrix
 	cv::Mat m_F;		//fundamental matrix
 	cv::Mat m_Q;		//map matrix
+
+	double m_calibrateCameraResult[OV_CAMNUM];
+	double m_stereoCalibrateResult;
 
 	//Private method
 	void StereoRectificationMatrix();

@@ -21,6 +21,13 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>ovrvision_app.Program</StartupObject>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -33,15 +40,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MetaioARRelease|x86'">
     <OutputPath>bin\x86\MetaioARRelease\</OutputPath>
@@ -51,6 +51,11 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <OutputPath>..\..\..\bin\Debug\x86\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

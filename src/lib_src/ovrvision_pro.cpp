@@ -66,6 +66,7 @@ OvrvisionPro::OvrvisionPro()
 
 	m_isOpen = false;
 	m_isCameraSync = false;
+	m_overrideXML[0] = '\0';
 }
 
 OvrvisionPro::~OvrvisionPro()
@@ -267,6 +268,11 @@ void OvrvisionPro::Close()
 	}
 
 	m_isOpen = false;
+}
+
+void OvrvisionPro::SetCustomCalibXML(const char* filename)
+{
+	sprintf_s(m_overrideXML, "%s", filename);
 }
 
 // Get OpenCL extensions of GPU
@@ -513,6 +519,10 @@ void OvrvisionPro::InitCameraSetting()
 	//Read files.
 	OvrvisionSetting ovrset(this);
 	if (ovrset.ReadEEPROM()) {
+		if (m_overrideXML[0]!='\0')
+		{
+			ovrset.ReadXML(m_overrideXML);
+		}
 
 		//Read Set
 		SetCameraExposure(ovrset.m_propExposure);

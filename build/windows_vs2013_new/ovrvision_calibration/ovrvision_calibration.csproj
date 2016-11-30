@@ -27,6 +27,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -41,7 +42,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MetaioARRelease|x86'">
     <OutputPath>bin\x86\MetaioARRelease\</OutputPath>
@@ -51,6 +51,11 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <OutputPath>..\..\..\bin\Debug\x86\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

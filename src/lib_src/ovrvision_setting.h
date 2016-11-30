@@ -65,6 +65,8 @@ public:
 	//Write Setting
 	bool WriteEEPROM(unsigned char flag);
 
+	bool ReadXML(const char* filename);
+
 	//Reset Setting
 	bool ResetEEPROM();
 

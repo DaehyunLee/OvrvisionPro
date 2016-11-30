@@ -24,114 +24,122 @@ namespace ovrvision_app
 {
     public class COvrvision
     {
+#if DEBUG
+        const string OVRVISION_DLL = "ovrvisiond";
+#else
+        const string OVRVISION_DLL = "ovrvision";
+#endif
+
         //Ovrvision Dll import
         //ovrvision_csharp.cpp
         ////////////// Main Ovrvision System //////////////
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovOpen(int locationID, float arMeter, int type);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovClose();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        static extern int ovOpenOverrideCalibXML(int locationID, float arMeter, int type, [MarshalAs(UnmanagedType.LPStr)] string filename);
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovRelease();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovPreStoreCamData(int qt);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovGetCamImageBGRA(System.IntPtr img, int eye);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovGetCamImageRGB(System.IntPtr img, int eye);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovGetCamImageBGR(System.IntPtr img, int eye);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovGetCamImageForUnity(System.IntPtr pImagePtr_Left, System.IntPtr pImagePtr_Right);
 
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovGetCamImageForUnityNative(System.IntPtr pTexPtr_Left, System.IntPtr pTexPtr_Right);
 
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetImageWidth();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetImageHeight();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetImageRate();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetBufferSize();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetPixelSize();
 
         //Set camera properties
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovSetExposure(int value);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovSetExposurePerSec(float value);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovSetGain(int value);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovSetBLC(int value);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovSetWhiteBalanceR(int value);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovSetWhiteBalanceG(int value);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovSetWhiteBalanceB(int value);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovSetWhiteBalanceAuto(int value);
         //Get camera properties
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetExposure();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetGain();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetBLC();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetWhiteBalanceR();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetWhiteBalanceG();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetWhiteBalanceB();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetWhiteBalanceAuto();
 
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern float ovGetFocalPoint();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern float ovGetHMDRightGap(int at);
 
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern float ovSetCamSyncMode(int at);
 
         ////////////// Ovrvision AR System //////////////
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovARRender();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovARGetData(System.IntPtr mdata, int datasize);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovARSetMarkerSize(int value);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovARGetMarkerSize();
 
         ////////////// Ovrvision Tracking System //////////////
         //testing
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovTrackRender(bool calib, bool point);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovGetTrackData(System.IntPtr mdata);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovTrackingCalibReset();
 
         ////////////// Ovrvision Calibration //////////////
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern void ovCalibInitialize(int pattern_size_w, int pattern_size_h, double chessSizeMM);
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovCalibClose();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovCalibFindChess();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-        static extern void ovCalibSolveStereoParameter();
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        static extern double ovCalibSolveStereoParameter();
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovCalibGetImageCount();
 
         //Ovrvision config save status
-        [DllImport("ovrvision", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern bool ovSaveCamStatusToEEPROM();
 
         //Macro Define
@@ -185,13 +193,13 @@ namespace ovrvision_app
         }
 
         //Open Ovrvision
-        public bool Open(int opentype)
+        public bool Open(int opentype, string filename)
         {
             if (camStatus)
                 return false;
 
             //Open camera
-            if (ovOpen(0, 0.15f, opentype) == 0)
+            if (ovOpenOverrideCalibXML(0, 0.15f, opentype, filename) == 0)
             {
                 imageSizeW = ovGetImageWidth();
                 imageSizeH = ovGetImageHeight();
@@ -209,7 +217,7 @@ namespace ovrvision_app
 
             return camStatus;
         }
-
+        
         public void UpdateCamera()
         {
             if (!camStatus)
@@ -415,9 +423,9 @@ namespace ovrvision_app
             return ovCalibFindChess();
         }
         //ovCalibSolveStereoParameter
-        public void CalibSolveStereoParameter()
+        public double CalibSolveStereoParameter()
         {
-            ovCalibSolveStereoParameter();
+            return ovCalibSolveStereoParameter();
         }
         //ovCalibGetImageCount
         public int CalibGetImageCount()

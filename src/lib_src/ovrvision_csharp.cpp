@@ -160,6 +160,36 @@ CSHARP_EXPORT int ovClose(void)
 	return 0;	//OK
 }
 
+// int ovOpen(void)
+CSHARP_EXPORT int ovOpenOverrideCalibXML(int locationID, float arMeter, int type, const char* filename)
+{
+	//Create object
+	if (g_ovOvrvision == NULL)
+		g_ovOvrvision = new OVR::OvrvisionPro();	//MainVideo
+
+	if (g_ovOvrvision)
+		g_ovOvrvision->SetCustomCalibXML(filename);
+													//Ovrvision Open
+	if (g_ovOvrvision->Open(locationID, (OVR::Camprop)type) == 0)	//0=Error
+		return 1;	//FALSE
+
+					//Create AR object
+	if (g_ovOvrvisionAR == NULL)
+		g_ovOvrvisionAR = new OVR::OvrvisionAR(arMeter, g_ovOvrvision->GetCamWidth(),
+			g_ovOvrvision->GetCamHeight(),
+			g_ovOvrvision->GetCamFocalPoint());	//AR
+												//Create AR object
+	if (g_ovOvrvisionTrack == NULL)
+		g_ovOvrvisionTrack = new OVR::OvrvisionTracking(g_ovOvrvision->GetCamWidth(),
+			g_ovOvrvision->GetCamHeight(), g_ovOvrvision->GetCamFocalPoint());	//Tracking
+
+																				//Clear
+	g_callTexture2DLeft = NULL;
+	g_callTexture2DRight = NULL;
+
+	return 0;	//OK
+}
+
 // int ovRelease(void) -> Exit
 CSHARP_EXPORT int ovRelease(void)
 {
@@ -758,18 +788,25 @@ CSHARP_EXPORT int ovCalibFindChess()
 	unsigned char* pLeft = g_ovOvrvision->GetCamImageBGRA(OVR::OV_CAMEYE_LEFT);
 	unsigned char* pRight = g_ovOvrvision->GetCamImageBGRA(OVR::OV_CAMEYE_RIGHT);
 
-	return g_ovOvrvisionCalib->FindChessBoardCorners(pLeft, pRight);
+	bool result = g_ovOvrvisionCalib->FindChessBoardCorners(pLeft, pRight);
+	if (result)
+	{
+		g_ovOvrvisionCalib->DrawChessboardCorners(pLeft, pLeft, OVR::OV_CAMEYE_LEFT);
+		g_ovOvrvisionCalib->DrawChessboardCorners(pRight, pRight, OVR::OV_CAMEYE_RIGHT);
+	}
+	return result;
 }
 
-CSHARP_EXPORT void ovCalibSolveStereoParameter()
+CSHARP_EXPORT double ovCalibSolveStereoParameter()
 {
 	if (g_ovOvrvision == NULL)
-		return;
+		return -1;
 	if(g_ovOvrvisionCalib == NULL)
-		return;
+		return -1;
 
-	g_ovOvrvisionCalib->SolveStereoParameter();
+	double rms = g_ovOvrvisionCalib->SolveStereoParameter();
 	g_ovOvrvisionCalib->SaveCalibrationParameter(g_ovOvrvision);	//default 
+	return rms;
 	//g_ovOvrvisionCalib->SaveCalibrationParameterToEEPROM();
 }
 

@@ -151,6 +151,8 @@ public:
 	/*!	@brief Close the Ovrvision Pro */
 	void Close();
 
+	void SetCustomCalibXML(const char* filename);
+
 	//Processor
 	/*!	@brief This function gets data from OvrvisionPro inside. 
 		@param qt Set an image processing method. */
@@ -426,6 +428,9 @@ private:
 
 	bool			m_isOpen;
 	bool			m_isCameraSync;
+
+	const static int MAX_XML_FILELEN = 512;
+	char			m_overrideXML[MAX_XML_FILELEN];
 
 	//initialize setting
 	void InitCameraSetting();
