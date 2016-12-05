@@ -435,7 +435,7 @@ void OvrvisionSetting::GetUndistortionMatrix(Cameye eye, ovMat &mapX, ovMat &map
 		left_CamIns.at<double>(4) = m_leftCameraInstric.at<double>(4) * m_focalPointScale;
 
 		//Undistort
-		initUndistortRectifyMap(left_CamIns, m_leftCameraDistortion, m_R1,
+		initUndistortRectifyMap(left_CamIns, m_leftCameraDistortion, ovMat(),
 			camPs, size, CV_32FC1, mapX, mapY);
 	}
 	else 
@@ -453,7 +453,7 @@ void OvrvisionSetting::GetUndistortionMatrix(Cameye eye, ovMat &mapX, ovMat &map
 		right_CamIns.at<double>(4) = m_rightCameraInstric.at<double>(4) * m_focalPointScale;
 
 		//Undistort
-		initUndistortRectifyMap(right_CamIns, m_rightCameraDistortion, m_R2,
+		initUndistortRectifyMap(right_CamIns, m_rightCameraDistortion, ovMat(),
 			camPs, size, CV_32FC1, mapX, mapY);
 	}
 }

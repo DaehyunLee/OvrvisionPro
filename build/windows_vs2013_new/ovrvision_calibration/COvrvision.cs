@@ -133,9 +133,24 @@ namespace ovrvision_calibration
         [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovCalibFindChess();
         [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        static extern int ovCalibFindChessAny();
+
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern double ovCalibSolveStereoParameter();
         [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        static extern double ovCalibSolveStereoParameterIsolated();
+        
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         static extern int ovCalibGetImageCount();
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        static extern int ovCalibGetImageCountLeftOnly();
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        static extern int ovCalibGetImageCountRightOnly();
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        static extern double ovGetCalibErrLeft();
+        [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        static extern double ovGetCalibErrRight();
+
 
         //Ovrvision config save status
         [DllImport(OVRVISION_DLL, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
@@ -419,18 +434,36 @@ namespace ovrvision_calibration
         //ovCalibFindChess
         public int CalibFindChess()
         {
-            return ovCalibFindChess();
+            return ovCalibFindChessAny();
         }
         //ovCalibSolveStereoParameter
         public double CalibSolveStereoParameter()
         {
-            return ovCalibSolveStereoParameter();
+            return ovCalibSolveStereoParameterIsolated();
         }
 
         //ovCalibGetImageCount
         public int CalibGetImageCount()
         {
             return ovCalibGetImageCount();
+        }
+
+        public int CalibGetImageCountIsolatedLeft()
+        {
+            return ovCalibGetImageCountLeftOnly();
+        }
+        public int CalibGetImageCountIsolatedRight()
+        {
+            return ovCalibGetImageCountRightOnly();
+        }
+
+        public double GetErrLeft()
+        {
+            return ovGetCalibErrLeft();
+        }
+        public double GetErrRight()
+        {
+            return ovGetCalibErrRight();
         }
 
     }

@@ -19,7 +19,7 @@
 
 #include "ovrvision_pro.h"
 #include "ovrvision_setting.h"
-
+#include <fstream>
 //Marker 
 #ifdef _OVRVISION_EXPORTS
 #include <opencv2/opencv.hpp>
@@ -51,6 +51,8 @@ typedef enum ov_cameraeye {
 
 /////////// CLASS ///////////
 
+typedef std::vector<cv::Point2f> Subpix_Corners;
+
 class OvrvisionCalibration
 {
 public:
@@ -66,17 +68,31 @@ public:
 
 	//Detecter
 	bool FindChessBoardCorners(const unsigned char* left_img, const unsigned char* right_img);
+	bool FindChessBoardCorners(const unsigned char* img, ov_cameraeye eye);
+	void CacheBothForStereoCalib();
 	void DrawChessboardCorners(const unsigned char* src_img, unsigned char* dest_img, Cameye eye);
+	void DumpChessboardCorners(const unsigned char* src_img, unsigned char* dest_img, Cameye eye);
+	void DumpCoverage(const unsigned char* src_img);
+
 	double SolveStereoParameter();
+	void LogIntrinsic(const cv::Mat& intrinsic, const cv::Mat& distortion, Size imageSize, double apertureWidth, double apertureHeight);
+
+	//calibration functions to separate the steps
+	double SolveCalibrationIsolated(ov_cameraeye eye);
+	double SolveStereoCalibrationIsolated();
 
 	//Save
 	void SaveCalibrationParameter(OvrvisionPro* ovrpro);
 
 	int GetImageCount() const{ return m_image_count; }	
+	void GetImageCountSeparate(int& left, int& right) const;
 
 	//Param : Camera intirinsic var
+	//these are for stereo
 	std::vector< std::vector<cv::Point2f> > m_subpix_corners_left;
 	std::vector< std::vector<cv::Point2f> > m_subpix_corners_right;
+
+	std::vector <Subpix_Corners> m_subpix_corners_SingleEye[OV_CAMNUM];
 
 	struct {
 		cv::Mat intrinsic_before_stereoCalib;
@@ -86,6 +102,7 @@ public:
 		cv::Mat R;
 		cv::Mat P;
 	} m_cameraCalibration[OV_CAMNUM];
+	double m_calibrationErr[OV_CAMNUM];
 
 private:
 
@@ -96,6 +113,7 @@ private:
 	cv::Size m_image_size;		//image resolution
 	cv::Size m_pattern_size;	//num. of col and row in a pattern
 
+	double m_acceptableErr;
 	double m_CHESS_LENGTH_MM;	//length(mm)
 	int m_MAX_CHESS_COUNT;
 	bool m_isFound[OV_CAMNUM];
@@ -111,6 +129,7 @@ private:
 
 	//Private method
 	void StereoRectificationMatrix();
+	std::ofstream m_log;
 };
 
 

@@ -38,6 +38,7 @@
             this.cameraPicRight = new System.Windows.Forms.PictureBox();
             this.cameraPicLeft = new System.Windows.Forms.PictureBox();
             this.buttonSetting = new System.Windows.Forms.Button();
+            this.ComputeCalibration = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chessPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cameraPicRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cameraPicLeft)).BeginInit();
@@ -156,12 +157,23 @@
             this.buttonSetting.UseVisualStyleBackColor = true;
             this.buttonSetting.Click += new System.EventHandler(this.buttonSetting_Click);
             // 
+            // ComputeCalibration
+            // 
+            this.ComputeCalibration.Location = new System.Drawing.Point(628, 12);
+            this.ComputeCalibration.Name = "ComputeCalibration";
+            this.ComputeCalibration.Size = new System.Drawing.Size(132, 31);
+            this.ComputeCalibration.TabIndex = 11;
+            this.ComputeCalibration.Text = "compute  Calibration";
+            this.ComputeCalibration.UseVisualStyleBackColor = true;
+            this.ComputeCalibration.Click += new System.EventHandler(this.ComputeCalibration_Click);
+            // 
             // MFrom
             // 
             this.AcceptButton = this.runbutton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1209, 717);
+            this.Controls.Add(this.ComputeCalibration);
             this.Controls.Add(this.buttonSetting);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
@@ -198,6 +210,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonSetting;
-	}
+        private System.Windows.Forms.Button ComputeCalibration;
+    }
 }
 

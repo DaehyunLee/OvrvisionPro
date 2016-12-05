@@ -20,7 +20,7 @@ namespace ovrvision_calibration
         //SettingForm
         SettingForm settingForm;
 
-        int CalibrationImageNumSteps = 3;
+        int CalibrationImageNumSteps = 100;
         int CalibrationImageNum;
 
 		public MFrom()
@@ -150,7 +150,7 @@ namespace ovrvision_calibration
                     float tilesize = csf.GetTileSize();
                     if (tilesize > 5)
                     {
-                        Ovrvision.InitializeCalibration(9, 7, (float)tilesize);
+                        Ovrvision.InitializeCalibration(9, 6, (float)tilesize);
                         cabliButton.Text = "Find Chessboard";
                         textBox1.AppendText(String.Format("Start calibration.... tile size is {0}mm\r\n", tilesize));
 
@@ -166,9 +166,13 @@ namespace ovrvision_calibration
                 cameraPicLeft.Visible = false;
                 Thread.Sleep(25);
 
-                if(Ovrvision.CalibFindChess() != 0)
+                int ret = Ovrvision.CalibFindChess();
+                if (ret != 0)
                 {
                     textBox1.AppendText(String.Format("[Success]Chess board was found: No.{0} / {1}\r\n", Ovrvision.CalibGetImageCount(), CalibrationImageNum));
+                    textBox1.AppendText(String.Format("Left : {0}, Right : {1}\r\n", (ret&0x01)==0x01 ? "found" : "not found", (ret & 0x10) == 0x10 ? "found" : "not found"));
+                    textBox1.AppendText(String.Format("Count Left : {0}, Right : {1}\r\n", Ovrvision.CalibGetImageCountIsolatedLeft(), Ovrvision.CalibGetImageCountIsolatedRight()));
+
                 }
                 else
                 {
@@ -190,10 +194,11 @@ namespace ovrvision_calibration
 				textBox1.AppendText(String.Format("OK!\r\n"));
                 Thread.Sleep(500); //0.5s wait
                 textBox1.AppendText(String.Format("The calibration params was saved successfully.\r\n"));
+                textBox1.AppendText(String.Format("LeftErr : {0}, RightErr : {1}\r\n", Ovrvision.GetErrLeft(), Ovrvision.GetErrRight()));
                 textBox1.AppendText(String.Format("calibration error{0}\r\n", result));
 
-                const double AcceptableErr = 1.0;
-                if (result < AcceptableErr)
+                const double AcceptableErr = 0.1;
+                if (result>0 && result < AcceptableErr)
                 {
                     //Close
                     ThreadEnd = true;
@@ -241,5 +246,18 @@ namespace ovrvision_calibration
                 settingForm.Show();
             }
         }
-	}
+
+        private void ComputeCalibration_Click(object sender, EventArgs e)
+        {
+            textBox1.AppendText(String.Format("Setup in the data..... "));
+            double result = Ovrvision.CalibSolveStereoParameter();
+            textBox1.AppendText(String.Format("OK!\r\n"));
+            Thread.Sleep(500); //0.5s wait
+            textBox1.AppendText(String.Format("The calibration params was saved successfully.\r\n"));
+            textBox1.AppendText(String.Format("calibration error{0}\r\n", result));
+            textBox1.AppendText(String.Format("LeftErr : {0}, RightErr : {1}\r\n", Ovrvision.GetErrLeft(), Ovrvision.GetErrRight() ));
+
+            textBox1.AppendText(String.Format("Ovrvision calibration is done.\r\n"));
+        }
+    }
 }

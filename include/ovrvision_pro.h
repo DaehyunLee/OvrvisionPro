@@ -52,7 +52,7 @@
 #include "OvrvisionProCL.h"	//!OpenCL Engine
 #else
 //USB cameras driver
-#ifdef WIN32
+#ifdef WIN32 
 class OvrvisionDirectShow;
 #elif defined(MACOSX)
 #define OvrvisionAVFoundation   void

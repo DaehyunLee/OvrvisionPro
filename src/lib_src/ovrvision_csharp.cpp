@@ -797,6 +797,36 @@ CSHARP_EXPORT int ovCalibFindChess()
 	return result;
 }
 
+CSHARP_EXPORT int ovCalibFindChessAny()
+{
+	if (g_ovOvrvisionCalib == NULL)
+		return 0;
+
+	g_ovOvrvision->PreStoreCamData(OVR::OV_CAMQT_DMS);	//ReRenderer
+	unsigned char* pLeft = g_ovOvrvision->GetCamImageBGRA(OVR::OV_CAMEYE_LEFT);
+	unsigned char* pRight = g_ovOvrvision->GetCamImageBGRA(OVR::OV_CAMEYE_RIGHT);
+
+	bool resultLeft = g_ovOvrvisionCalib->FindChessBoardCorners(pLeft, OVR::OV_CAMEYE_LEFT);
+	bool resultRight = g_ovOvrvisionCalib->FindChessBoardCorners(pRight, OVR::OV_CAMEYE_RIGHT);
+
+	int result = 0;
+	if (resultLeft) result += 0x01;
+	if (resultRight) result += 0x10;
+
+	if (resultLeft || resultRight)
+	{
+		g_ovOvrvisionCalib->DumpChessboardCorners(pLeft, pLeft, OVR::OV_CAMEYE_LEFT);
+		g_ovOvrvisionCalib->DumpChessboardCorners(pRight, pRight, OVR::OV_CAMEYE_RIGHT);
+	}
+
+	if (resultLeft && resultRight)
+	{
+		g_ovOvrvisionCalib->CacheBothForStereoCalib();
+	}
+
+	return result;
+}
+
 CSHARP_EXPORT double ovCalibSolveStereoParameter()
 {
 	if (g_ovOvrvision == NULL)
@@ -806,6 +836,24 @@ CSHARP_EXPORT double ovCalibSolveStereoParameter()
 
 	double rms = g_ovOvrvisionCalib->SolveStereoParameter();
 	g_ovOvrvisionCalib->SaveCalibrationParameter(g_ovOvrvision);	//default 
+	return rms;
+}
+
+CSHARP_EXPORT double ovCalibSolveStereoParameterIsolated()
+{
+	if (g_ovOvrvision == NULL)
+		return -1;
+	if (g_ovOvrvisionCalib == NULL)
+		return -1;
+
+	double rmsLeft = g_ovOvrvisionCalib->SolveCalibrationIsolated(OVR::OV_CAMEYE_LEFT);
+	double rmsRight = g_ovOvrvisionCalib->SolveCalibrationIsolated(OVR::OV_CAMEYE_RIGHT);
+
+	double rms = g_ovOvrvisionCalib->SolveStereoCalibrationIsolated();
+	if (rms > 0)
+	{
+		g_ovOvrvisionCalib->SaveCalibrationParameter(g_ovOvrvision);	//default 
+	}
 	return rms;
 	//g_ovOvrvisionCalib->SaveCalibrationParameterToEEPROM();
 }
@@ -818,6 +866,40 @@ CSHARP_EXPORT int ovCalibGetImageCount()
 	return g_ovOvrvisionCalib->GetImageCount();
 }
 
+CSHARP_EXPORT int ovCalibGetImageCountLeftOnly()
+{
+	if (g_ovOvrvisionCalib == NULL)
+		return -1;
+
+	int left, right;
+	g_ovOvrvisionCalib->GetImageCountSeparate(left, right);
+	return left;
+}
+
+CSHARP_EXPORT int ovCalibGetImageCountRightOnly()
+{
+	if (g_ovOvrvisionCalib == NULL)
+		return -1;
+
+	int left, right;
+	g_ovOvrvisionCalib->GetImageCountSeparate(left, right);
+	return right;
+}
+
+CSHARP_EXPORT double ovGetCalibErrLeft()
+{
+	if (g_ovOvrvisionCalib == NULL)
+		return -1;
+
+	return g_ovOvrvisionCalib->m_calibrationErr[OVR::OV_CAMEYE_LEFT];
+}
+CSHARP_EXPORT double ovGetCalibErrRight()
+{
+	if (g_ovOvrvisionCalib == NULL)
+		return -1;
+
+	return g_ovOvrvisionCalib->m_calibrationErr[OVR::OV_CAMEYE_RIGHT];
+}
 
 #ifdef __cplusplus
 }
