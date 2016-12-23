@@ -160,6 +160,7 @@ public:
 	/*!	@brief Gets the image data of 32 bits of BGRA form. 
 		@param eye OV_CAMEYE_LEFT or OV_CAMEYE_RIGHT  */
 	unsigned char* GetCamImageBGRA(OVR::Cameye eye);
+	double GetCamImageTimeStamp() const;
 	/*!	@brief This function gets data from OvrvisionPro inside.
 		@param pImageBuf Image buffer pointer
 		@param eye OV_CAMEYE_LEFT or OV_CAMEYE_RIGHT */
@@ -398,6 +399,8 @@ public:
 	/*! @brief Check GPU specification 
 		@return true if satisfaied for OrvisionPro */
 	static bool CheckGPU();
+
+	double m_FrameTime;
 
 private:
 #ifdef WIN32

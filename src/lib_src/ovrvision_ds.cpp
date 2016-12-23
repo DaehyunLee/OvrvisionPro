@@ -16,10 +16,20 @@
 
 //Windows only
 #ifdef WIN32
+#include <cvmarkersobj.h>  
 
 /////////// INCLUDE ///////////
 
 #include "ovrvision_ds.h"
+
+
+#include <ctime>
+
+#include <chrono>
+#include <iostream>
+using namespace Concurrency::diagnostic;
+
+marker_series ds_series = TEXT("OvrvisionDS");
 
 //Group
 namespace OVR
@@ -57,7 +67,7 @@ inline void SAFE_DELETEARRAY(T*& p){
 }
 
 // Get filter pins
-static IPin *OV_GetPin(IBaseFilter *pFilter, PIN_DIRECTION PinDir)
+static IPin *OV_GetPin(IBaseFilter *pFilter, PIN_DIRECTION PinDir, bool bCapturePin = false)
 {
 	BOOL       bFound = FALSE;
 	IEnumPins  *pEnum;
@@ -67,6 +77,26 @@ static IPin *OV_GetPin(IBaseFilter *pFilter, PIN_DIRECTION PinDir)
 	pFilter->EnumPins(&pEnum);
 	while(pEnum->Next(1, &pPin, 0) == S_OK)
 	{
+		//GUID Category = PIN_CATEGORY_CAPTURE;
+
+		//IKsPropertySet *pKs = NULL;
+		//HRESULT hr = pPin->QueryInterface(IID_PPV_ARGS(&pKs));
+		//if (SUCCEEDED(hr))
+		//{
+		//	GUID PinCategory;
+		//	DWORD cbReturned;
+		//	hr = pKs->Get(AMPROPSETID_Pin, AMPROPERTY_PIN_CATEGORY, NULL, 0,
+		//		&PinCategory, sizeof(GUID), &cbReturned);
+		//	if (SUCCEEDED(hr) && (cbReturned == sizeof(GUID)))
+		//	{
+		//		bFound = (PinCategory == Category);
+		//	}
+		//	pKs->Release();
+		//}
+
+		//if (!bFound && bCapturePin)
+		//	continue;
+
 		PIN_DIRECTION PinDirThis;
 		pPin->QueryDirection(&PinDirThis);
 		if (bFound = (PinDir == PinDirThis)) 
@@ -90,8 +120,8 @@ public:
 	OVSampleGrabberCB() : ISampleGrabberCB()
 	{
 		//Initialize
-		InitializeCriticalSection(&m_critSection);
-		m_hEvent = CreateEvent(NULL, true, false, NULL);
+		InitializeCriticalSectionAndSpinCount(&m_critSection, 2000);
+		m_hEvent = CreateEvent(NULL, false, false, NULL);
 
 		m_LatestBufferLength = 0;
 		
@@ -99,6 +129,7 @@ public:
 		memset(m_pPixels,0x00,sizeof(unsigned char)*OV_MAX_BUFFERNUMBYTE);
 
 		m_get_callback = NULL;
+		StartCounter();
 	}
 
 	~OVSampleGrabberCB()
@@ -119,22 +150,66 @@ public:
         *ppvObject = static_cast<ISampleGrabberCB*>(this);
         return S_OK;
     }
+
+	double PCFreq = 0.0;
+	__int64 CounterStart = 0;
+
+	void StartCounter()
+	{
+		LARGE_INTEGER li;
+		if (!QueryPerformanceFrequency(&li))
+			std::cout << "QueryPerformanceFrequency failed!\n";
+
+		PCFreq = double(li.QuadPart) / 1000.0;
+
+		QueryPerformanceCounter(&li);
+		CounterStart = li.QuadPart;
+	}
+
+	double GetCounter()
+	{
+		LARGE_INTEGER li;
+		QueryPerformanceCounter(&li);
+		return double(li.QuadPart ) / PCFreq;
+		//return double(li.QuadPart - CounterStart) / PCFreq;
+	}
+
     
     //This method is meant to have less overhead
     STDMETHODIMP SampleCB(double time, IMediaSample *pSample)
 	{
+		span *flagSpan = new span(ds_series, 1, _T("SampleCB"));
+
 		unsigned char* ptrBuffer;
-		
-		if(WaitForSingleObject(m_hEvent, 0) == WAIT_OBJECT_0)
-			return S_OK;
+
+		static double last = 0;
+
+		printf("SampleCB stamp: (%.4f) elapsed:(%.4f)\n", time, time - last);
+		//unsigned long long uptime = std::chrono::seconds(GetTickCount64());
+		unsigned long long tick = GetTickCount64();
+		printf("SampleCB time : cb (%.4f) api:(%.4f) diff (%.4f)\n", time, tick / 1000.0f, time - tick / 1000.0f);
+		printf("third attempt : %f diff (%f)\n", GetCounter()/1000.f, GetCounter() / 1000.f-time);
+
+		DWORD dwTimeAdjustment = 0, dwTimeIncrement = 0, dwClockTick;
+		BOOL fAdjustmentDisabled = TRUE;
+		GetSystemTimeAdjustment(&dwTimeAdjustment, &dwTimeIncrement, &fAdjustmentDisabled);
+
+		printf("adjust %d\n%f\n%f\n", fAdjustmentDisabled, (double)dwTimeAdjustment / 10000000, (double)dwTimeIncrement / 10000000);
+		//std::cout << "\nTime Adjustment disabled: " << fAdjustmentDisabled
+		//	<< "\nTime Adjustment: " << (double)dwTimeAdjustment / 10000000
+		//	<< "\nTime Increment: " << (double)dwTimeIncrement / 10000000 << std::endl;
+		last = time;
+
 
 		if(SUCCEEDED(pSample->GetPointer(&ptrBuffer)))
 		{
-			m_LatestBufferLength = pSample->GetActualDataLength();
+			int bufferLength = pSample->GetActualDataLength();
 
 			//Deta copy
 			EnterCriticalSection(&m_critSection);
+				m_LatestBufferLength = bufferLength;
   				memcpy(m_pPixels, ptrBuffer, m_LatestBufferLength);
+				m_pixelCaptureTime = time;
 			LeaveCriticalSection(&m_critSection);
 
 			SetEvent(m_hEvent);
@@ -144,18 +219,22 @@ public:
 				m_get_callback();
 		}
 
+		delete flagSpan;
+
 		return S_OK;
     }
     
     //This method is meant to have more overhead
     STDMETHODIMP BufferCB(double Time, BYTE *pBuffer, long BufferLen)
 	{
-    	return E_NOTIMPL;
+		printf("BufferCB %.4f\n", Time);
+		return E_NOTIMPL;
     }
 
 	//Var
 	int m_LatestBufferLength;
 	unsigned char* m_pPixels;
+	double m_pixelCaptureTime;
 	void(*m_get_callback)(void);
 
 	//Thread var
@@ -444,7 +523,7 @@ int OvrvisionDirectShow::CreateDevice(usb_id vid, usb_id pid,
 		/* Form connecting the line.
 		 *	[OVRVISION_CAM]->[SampleGrabber]->[NullRenderer]
 		 */
-		IPin* pOutPin = OV_GetPin(m_pSrcFilter,PINDIR_OUTPUT);
+		IPin* pOutPin = OV_GetPin(m_pSrcFilter,PINDIR_OUTPUT, false);
 		IPin* pInPin = OV_GetPin(m_pGrabberFilter,PINDIR_INPUT);
 		hr = m_pGraph->Connect(pOutPin, pInPin);
 		if (FAILED(hr)){
@@ -623,14 +702,39 @@ int OvrvisionDirectShow::GetBayer16Image(unsigned char* pImage, bool nonblocking
 
 	result = RESULT_FAILED;
 	if (pImage) {
-		m_latestPixelDataSize = m_pSGCallback->m_LatestBufferLength;
 		EnterCriticalSection(&m_pSGCallback->m_critSection);
+			m_latestPixelDataSize = m_pSGCallback->m_LatestBufferLength;
 			memcpy(pImage, m_pSGCallback->m_pPixels, m_pSGCallback->m_LatestBufferLength);	//Data copy
 		LeaveCriticalSection(&m_pSGCallback->m_critSection);
 		result = RESULT_OK;
 	}
 
-	ResetEvent(m_pSGCallback->m_hEvent);
+	return result;
+}
+
+int OvrvisionDirectShow::GetBayer16ImageWTimeStamp(unsigned char* pImage, bool nonblocking, double& time)
+{
+	int signalwait = OV_BLOCKTIMEOUT;
+
+	if (m_devstatus != OV_DEVRUNNING)
+		return RESULT_FAILED;
+
+	if (nonblocking)
+		signalwait = 0;	//nonblock
+
+	DWORD result = WaitForSingleObject(m_pSGCallback->m_hEvent, signalwait);
+	if (result != WAIT_OBJECT_0)
+		return RESULT_FAILED;
+
+	result = RESULT_FAILED;
+	if (pImage) {
+		EnterCriticalSection(&m_pSGCallback->m_critSection);
+		m_latestPixelDataSize = m_pSGCallback->m_LatestBufferLength;
+		memcpy(pImage, m_pSGCallback->m_pPixels, m_pSGCallback->m_LatestBufferLength);	//Data copy
+		time = m_pSGCallback->m_pixelCaptureTime;
+		LeaveCriticalSection(&m_pSGCallback->m_critSection);
+		result = RESULT_OK;
+	}
 
 	return result;
 }

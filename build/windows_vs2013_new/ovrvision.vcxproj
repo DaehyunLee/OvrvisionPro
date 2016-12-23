@@ -101,7 +101,7 @@
     <OutDir>.\..\..\bin\x64\</OutDir>
     <IntDir>$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>.\..\..\bin\x86\</OutDir>
@@ -128,7 +128,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\p3qgyhgk.on4\SDK\Native\inc;.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_OVRVISION_EXPORTS;OPENCV_VERSION_3;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -149,6 +149,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(OutDir)ovrvisiond.lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)$(TargetName)d.pdb</ProgramDatabaseFile>
+      <Version>0.1</Version>
     </Link>
     <PostBuildEvent>
       <Command>If Exist $(TargetDir)\ovrvision.dll copy $(TargetDir)\ovrvision.dll $(SolutionDir)..\all_unity5\Assets\OvrvisionPro\Plugins\x86\ovrvision.dll /Y /B</Command>
@@ -160,7 +161,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\p3qgyhgk.on4\SDK\Native\inc;.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_OVRVISION_EXPORTS;OPENCV_VERSION_3;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -179,16 +180,21 @@
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
       <ImportLibrary>$(OutDir)ovrvision64d.lib</ImportLibrary>
+      <Version>0.1</Version>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName)d.pdb</ProgramDatabaseFile>
     </Link>
     <PostBuildEvent>
-      <Command>If Exist $(TargetDir)\ovrvision.dll copy $(TargetDir)\ovrvision.dll $(SolutionDir)..\all_unity5\Assets\OvrvisionPro\Plugins\x86_64\ovrvision.dll /Y /B</Command>
+      <Command>If Exist $(TargetDir)\ovrvision.dll copy $(TargetDir)\ovrvision.dll $(SolutionDir)..\all_unity5\Assets\OvrvisionPro\Plugins\x86_64\ovrvision.dll /Y /B
+If Exist $(TargetDir)\ovrvisiond.dll copy $(TargetDir)\ovrvisiond.dll $(SolutionDir)..\..\..\UnrealEngine\Engine\Plugins\Runtime\OvrvisionPlugin\ThirdParty\OvrVision\lib\Win64\ovrvisiond.dll /Y /B
+If Exist $(TargetDir)\ovrvisiond.pdb copy $(TargetDir)\ovrvisiond.pdb $(SolutionDir)..\..\..\UnrealEngine\Engine\Plugins\Runtime\OvrvisionPlugin\ThirdParty\OvrVision\lib\Win64\ovrvisiond.pdb /Y /B
+If Exist $(TargetDir)\ovrvision64d.lib copy $(TargetDir)\ovrvision64d.lib $(SolutionDir)..\..\..\UnrealEngine\Engine\Plugins\Runtime\OvrvisionPlugin\ThirdParty\OvrVision\lib\Win64\ovrvision64d.lib /Y /B</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\p3qgyhgk.on4\SDK\Native\inc;.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_OVRVISION_EXPORTS;OPENCV_VERSION_3;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -208,6 +214,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(OutDir)ovrvision.lib</ImportLibrary>
+      <Version>0.1</Version>
     </Link>
     <PostBuildEvent>
       <Command>If Exist $(TargetDir)\ovrvision.dll copy $(TargetDir)\ovrvision.dll $(SolutionDir)..\all_unity5\Assets\OvrvisionPro\Plugins\x86\ovrvision.dll /Y /B</Command>
@@ -217,7 +224,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\p3qgyhgk.on4\SDK\Native\inc;.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_OVRVISION_EXPORTS;OPENCV_VERSION_3;__OVRVISION_METAIO_AR__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -238,6 +245,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(OutDir)ovrvision.lib</ImportLibrary>
+      <Version>0.1</Version>
     </Link>
     <PostBuildEvent>
       <Command>If Exist $(TargetDir)\ovrvision_metaio.dll copy $(TargetDir)\ovrvision_metaio.dll $(SolutionDir)..\all_unity5_metaio\Assets\OvrvisionPro\Plugins\x86\ovrvision.dll /Y /B</Command>
@@ -250,7 +258,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\p3qgyhgk.on4\SDK\Native\inc;.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_OVRVISION_EXPORTS;OPENCV_VERSION_3;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -270,9 +278,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX64</TargetMachine>
       <ImportLibrary>$(OutDir)ovrvision64.lib</ImportLibrary>
+      <Version>0.1</Version>
     </Link>
     <PostBuildEvent>
-      <Command>If Exist $(TargetDir)\ovrvision.dll copy $(TargetDir)\ovrvision.dll $(SolutionDir)..\all_unity5\Assets\OvrvisionPro\Plugins\x86_64\ovrvision.dll /Y /B</Command>
+      <Command>If Exist $(TargetDir)\ovrvision.dll copy $(TargetDir)\ovrvision.dll $(SolutionDir)..\all_unity5\Assets\OvrvisionPro\Plugins\x86_64\ovrvision.dll /Y /B
+If Exist $(TargetDir)\ovrvision.dll copy $(TargetDir)\ovrvision.dll $(SolutionDir)..\..\..\UnrealEngine\Engine\Plugins\Runtime\OvrvisionPlugin\ThirdParty\OvrVision\lib\Win64\ovrvision.dll /Y /B
+If Exist $(TargetDir)\ovrvision.dll copy $(TargetDir)\ovrvision64.lib $(SolutionDir)..\..\..\UnrealEngine\Engine\Plugins\Runtime\OvrvisionPlugin\ThirdParty\OvrVision\lib\Win64\ovrvision64.lib /Y /B</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MetaioARRelease|x64'">
@@ -282,7 +293,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\p3qgyhgk.on4\SDK\Native\inc;.\..\..\include;.\..\..\3rdparty\aruco;.\..\..\3rdparty\opencv\build\include;.\..\..\3rdparty;.\..\..\3rdparty\opencl\amd\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_OVRVISION_EXPORTS;OPENCV_VERSION_3;__OVRVISION_METAIO_AR__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -303,6 +314,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX64</TargetMachine>
       <ImportLibrary>$(OutDir)ovrvision64.lib</ImportLibrary>
+      <Version>0.1</Version>
     </Link>
     <PostBuildEvent>
       <Command>If Exist $(TargetDir)\ovrvision_metaio.dll copy $(TargetDir)\ovrvision_metaio.dll $(SolutionDir)..\all_unity5_metaio\Assets\OvrvisionPro\Plugins\x86_64\ovrvision.dll /Y /B</Command>

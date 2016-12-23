@@ -349,7 +349,7 @@ void OvrvisionPro::Capture(OVR::Camqt qt)
 		return;
 
 #if defined(WIN32)
-	if (m_pODS->GetBayer16Image((uchar *)m_pFrame, !m_isCameraSync) == RESULT_OK)
+	if (m_pODS->GetBayer16ImageWTimeStamp((uchar *)m_pFrame, !m_isCameraSync, m_FrameTime) == RESULT_OK)
 #elif defined(MACOSX)
     if([m_pOAV getBayer16Image:(uchar *)m_pFrame blocking:!m_isCameraSync]==RESULT_OK)
 #elif defined(LINUX)
@@ -465,7 +465,7 @@ void OvrvisionPro::PreStoreCamData(OVR::Camqt qt)
 		return;
 
 #if defined(WIN32)
-	if (m_pODS->GetBayer16Image((uchar *)m_pFrame, !m_isCameraSync) == RESULT_OK)
+	if (m_pODS->GetBayer16ImageWTimeStamp((uchar *)m_pFrame, !m_isCameraSync, m_FrameTime) == RESULT_OK)
 #elif defined(MACOSX)
 	if ([m_pOAV getBayer16Image: (uchar *)m_pFrame blocking: !m_isCameraSync] == RESULT_OK)
 #elif defined(LINUX)
@@ -495,6 +495,11 @@ void OvrvisionPro::PreStoreCamData(OVR::Camqt qt)
 unsigned char* OvrvisionPro::GetCamImageBGRA(OVR::Cameye eye)
 {
 	return m_pPixels[(int)eye];
+}
+
+double OvrvisionPro::GetCamImageTimeStamp() const
+{
+	return m_FrameTime;
 }
 
 void OvrvisionPro::GetCamImageBGRA(unsigned char* pImageBuf, OVR::Cameye eye)

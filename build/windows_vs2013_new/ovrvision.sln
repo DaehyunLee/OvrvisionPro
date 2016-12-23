@@ -87,7 +87,7 @@ Global
 		{0AC0392B-425F-4D3D-9E90-20A3D3346EB8}.Debug|Mixed Platforms.Build.0 = MetaioARRelease|x86
 		{0AC0392B-425F-4D3D-9E90-20A3D3346EB8}.Debug|Win32.ActiveCfg = Debug|x86
 		{0AC0392B-425F-4D3D-9E90-20A3D3346EB8}.Debug|Win32.Build.0 = Debug|x86
-		{0AC0392B-425F-4D3D-9E90-20A3D3346EB8}.Debug|x64.ActiveCfg = Release|x86
+		{0AC0392B-425F-4D3D-9E90-20A3D3346EB8}.Debug|x64.ActiveCfg = Debug|x86
 		{0AC0392B-425F-4D3D-9E90-20A3D3346EB8}.MetaioARRelease|Mixed Platforms.ActiveCfg = MetaioARRelease|x86
 		{0AC0392B-425F-4D3D-9E90-20A3D3346EB8}.MetaioARRelease|Mixed Platforms.Build.0 = MetaioARRelease|x86
 		{0AC0392B-425F-4D3D-9E90-20A3D3346EB8}.MetaioARRelease|Win32.ActiveCfg = MetaioARRelease|x86
